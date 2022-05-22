@@ -740,9 +740,9 @@
 
   // 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   // from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define DEFAULT_bedKp 54.86  // MRiscoC Stock Ender PID
-  #define DEFAULT_bedKi  10.06  // MRiscoC Stock Ender PID
-  #define DEFAULT_bedKd 199.38  // MRiscoC Stock Ender PID
+  #define DEFAULT_bedKp 98.42   // Avedena custom bed PID
+  #define DEFAULT_bedKi  17.83  // Avedena custom bed PID
+  #define DEFAULT_bedKd 362.17  // Avedena custom bed PID
 
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
