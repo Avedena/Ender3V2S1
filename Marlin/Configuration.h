@@ -1969,6 +1969,11 @@
   #define EEPROM_INIT_NOW   // Init EEPROM on first boot after a new build.  // MRiscoC Reset EEPROM on first boot
 #endif
 
+//#if HAS_CUTTER
+  #define  LASER_FDM_ADDR             1950 // Avedena
+  #define  LASER_Z_AXIS_HIGH_ADDR     1952 // Avedena Occupies two bytes
+//#endif
+
 //
 // Host Keepalive
 //
