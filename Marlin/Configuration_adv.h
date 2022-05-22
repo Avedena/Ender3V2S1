@@ -922,6 +922,7 @@
    * Set the default state here, change with 'M401 S' or UI, use M500 to save, M502 to reset.
    */
   #define BLTOUCH_HS_MODE true
+  #define BLTOUCH_HS_MODE false // Avedena CR Touch failed if you probe more then 4 points in HS mode
 
   // Safety: Enable voltage mode settings in the LCD menu.
   //#define BLTOUCH_LCD_VOLTAGE_MENU
