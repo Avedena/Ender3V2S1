@@ -2098,6 +2098,10 @@
   #define MESH_MIN_Y 10
   #define MESH_MAX_X 195
   #define MESH_MAX_Y 175
+  #define MESH_MIN_X 20       // Avedena max probing size // 10 
+  #define MESH_MIN_Y 20       // Avedena max probing size // 10
+  #define MESH_MAX_X 223.2    // Avedena max probing size // 195
+  #define MESH_MAX_Y 199.5    // Avedena max probing size // 175
 #endif
 
 #if BOTH(AUTO_BED_LEVELING_UBL, EEPROM_SETTINGS)

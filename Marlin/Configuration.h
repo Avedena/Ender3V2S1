@@ -1286,6 +1286,7 @@
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
 #define PROBING_MARGIN 10  // MRiscoC Avoid clips on borders
+#define PROBING_MARGIN 3  // Avedena Max Size becouse S1 has no clips on borders
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_FEEDRATE (200*60)  // MRiscoC increase travel speed between probes
@@ -1498,9 +1499,13 @@
 // Travel limits (linear=mm, rotational=°) after homing, corresponding to endstop positions.
 #define X_MIN_POS -10  // MRiscoC Stock physical limit
 #define Y_MIN_POS -8  // MRiscoC Stock physical limit
+#define X_MIN_POS 0  // Avedena align nozzle with physical bed
+#define Y_MIN_POS 0  // Avedena align nozzle with physical bed
 #define Z_MIN_POS 0
 #define X_MAX_POS 245  // Avedena extend to max physical limit
 #define Y_MAX_POS 235  // Avedena extend to max physical limit
+#define X_MAX_POS 255  // Avedena extend to max physical limit
+#define Y_MAX_POS 240  // Avedena extend to max physical limit
 #define Z_MAX_POS 270  // Ender Configs
 //#define I_MIN_POS 0
 //#define I_MAX_POS 50
