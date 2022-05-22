@@ -1285,7 +1285,6 @@
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 10  // MRiscoC Avoid clips on borders
 #define PROBING_MARGIN 3  // Avedena Max Size becouse S1 has no clips on borders
 
 // X and Y axis travel speed (mm/min) between probes
@@ -1497,13 +1496,9 @@
 #define Y_BED_SIZE 235  // Avedena Max usable bed size
 
 // Travel limits (linear=mm, rotational=°) after homing, corresponding to endstop positions.
-#define X_MIN_POS -10  // MRiscoC Stock physical limit
-#define Y_MIN_POS -8  // MRiscoC Stock physical limit
 #define X_MIN_POS 0  // Avedena align nozzle with physical bed
 #define Y_MIN_POS 0  // Avedena align nozzle with physical bed
 #define Z_MIN_POS 0
-#define X_MAX_POS 245  // Avedena extend to max physical limit
-#define Y_MAX_POS 235  // Avedena extend to max physical limit
 #define X_MAX_POS 255  // Avedena extend to max physical limit
 #define Y_MAX_POS 240  // Avedena extend to max physical limit
 #define Z_MAX_POS 270  // Ender Configs
@@ -2925,7 +2920,7 @@
 // Ender-3 v2 OEM display. A DWIN display with Rotary Encoder.
 //
 //#define DWIN_CREALITY_LCD           // Creality UI
-#define DWIN_LCD_PROUI              // Pro UI by MRiscoC  // MRiscoC Enable ProUI
+#define DWIN_LCD_PROUI                // Pro UI by MRiscoC  // MRiscoC Enable ProUI
 //#define DWIN_CREALITY_LCD_JYERSUI   // Jyers UI by Jacob Myers
 //#define DWIN_MARLINUI_PORTRAIT      // MarlinUI (portrait orientation)
 //#define DWIN_MARLINUI_LANDSCAPE     // MarlinUI (landscape orientation)
