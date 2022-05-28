@@ -657,9 +657,9 @@
     #define DEFAULT_Ki_LIST {   1.08,   1.08 }
     #define DEFAULT_Kd_LIST { 114.00, 114.00 }
   #else
-    #define DEFAULT_Kp  17.10  // MRiscoC Stock Ender PID
-    #define DEFAULT_Ki   1.39  // MRiscoC Stock Ender PID
-    #define DEFAULT_Kd  52.79  // MRiscoC Stock Ender PID
+    #define DEFAULT_Kp  17.10  // Avedena custom Sprite Pro PID
+    #define DEFAULT_Ki   1.39  // Avedena custom Sprite Pro PID
+    #define DEFAULT_Kd  52.79  // Avedena custom Sprite Pro PID
   #endif
 #endif
 
@@ -1291,7 +1291,7 @@
 #define XY_PROBE_FEEDRATE (200*60)  // MRiscoC increase travel speed between probes
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
-#define Z_PROBE_FEEDRATE_FAST (16*60)  // MRiscoC increase probe Z speed
+#define Z_PROBE_FEEDRATE_FAST (8*60)  // Avedena decrease probe Z speed for precision
 
 // Feedrate (mm/min) for the "accurate" probe of each point
 #define Z_PROBE_FEEDRATE_SLOW (Z_PROBE_FEEDRATE_FAST / 2)
@@ -1341,7 +1341,7 @@
  * A total of 2 does fast/slow probes with a weighted average.
  * A total of 3 or more adds more slow probes, taking the average.
  */
-#define MULTIPLE_PROBING 2  // MRiscoC Enabled
+#define MULTIPLE_PROBING 3  // Avedena increase to taking the average.
 #define EXTRA_PROBING    1  // MRiscoC Enabled
 
 /**
@@ -1689,7 +1689,7 @@
 #define PREHEAT_BEFORE_LEVELING  // MRiscoC Heatting to compensate thermal expansions  // Ender3S1 Configs
 #if ENABLED(PREHEAT_BEFORE_LEVELING)
   #define LEVELING_NOZZLE_TEMP   0   // (°C) Only applies to E0 at this time  // MRiscoC No necessary for BLTouch
-  #define LEVELING_BED_TEMP     50
+  #define LEVELING_BED_TEMP     60
 #endif
 
 /**
@@ -1770,8 +1770,8 @@
 
   //#define MESH_EDIT_GFX_OVERLAY   // Display a graphics overlay while editing the mesh
 
-  #define MESH_INSET 25              // Set Mesh bounds as an inset region of the bed  // MRiscoC Center mesh
-  #define GRID_MAX_POINTS_X 4      // Don't use more than 15 points per axis, implementation limited.  // MRiscoC Customizable by menu
+  #define MESH_INSET 20              // Set Mesh bounds as an inset region of the bed  // MRiscoC Center mesh
+  #define GRID_MAX_POINTS_X 9        // Avedena Max Points for precision // Don't use more than 15 points per axis, implementation limited.  // MRiscoC Customizable by menu
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   #define UBL_HILBERT_CURVE       // Use Hilbert distribution for less travel when probing multiple points  // MRiscoC UBL

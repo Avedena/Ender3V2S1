@@ -24,7 +24,7 @@
 #include "../../../inc/MarlinConfigPre.h"
 
 #define HAS_GCODE_PREVIEW 1
-#define HAS_TOOLBAR 1
+#define HAS_TOOLBAR 0    // Avedena curently not needed
 
 #ifndef LOW
   #define LOW  0x0
@@ -51,7 +51,7 @@ constexpr int16_t DEF_Z_MAX_POS = Z_MAX_POS;
 #if HAS_BED_PROBE
   #if !EITHER(MESH_BED_LEVELING, AUTO_BED_LEVELING_UBL)
     // Override the mesh area if the automatic (max) area is too large
-    #define MESH_INSET 25
+    #define MESH_INSET 20
     #define MESH_MIN_X MESH_INSET
     #define MESH_MIN_Y MESH_INSET
     #define MESH_MAX_X X_BED_SIZE - (MESH_INSET)
