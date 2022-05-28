@@ -28,6 +28,7 @@
 #include "../../module/planner.h"
 #include "../../module/motion.h"
 #include "../../module/printcounter.h"
+#include "../../module/temperature.h"
 #include "../../gcode/queue.h"
 
 #if HAS_BUZZER
@@ -162,15 +163,12 @@ void MenuEditItemBase::goto_edit_screen(
 
 #include "../../MarlinCore.h"
 
-bool printer_busy() {
-  return planner.movesplanned() || printingIsActive();
-}
-
 /**
  * General function to go directly to a screen
  */
 void MarlinUI::goto_screen(screenFunc_t screen, const uint16_t encoder/*=0*/, const uint8_t top/*=0*/, const uint8_t items/*=0*/) {
   if (currentScreen != screen) {
+    thermalManager.set_menu_cold_override(false);
 
     TERN_(IS_DWIN_MARLINUI, did_first_redraw = false);
 
@@ -205,14 +203,14 @@ void MarlinUI::goto_screen(screenFunc_t screen, const uint16_t encoder/*=0*/, co
     if (on_status_screen()) {
       defer_status_screen(false);
       clear_menu_history();
-      TERN_(AUTO_BED_LEVELING_UBL, ubl.lcd_map_control = false);
+      TERN_(AUTO_BED_LEVELING_UBL, bedlevel.lcd_map_control = false);
     }
 
     clear_lcd();
 
     // Re-initialize custom characters that may be re-used
     #if HAS_MARLINUI_HD44780
-      if (TERN1(AUTO_BED_LEVELING_UBL, !ubl.lcd_map_control))
+      if (TERN1(AUTO_BED_LEVELING_UBL, !bedlevel.lcd_map_control))
         set_custom_characters(on_status_screen() ? CHARSET_INFO : CHARSET_MENU);
     #endif
 

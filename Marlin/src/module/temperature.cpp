@@ -178,7 +178,7 @@
   #include "tool_change.h"
 #endif
 
-#if USE_BEEPER
+#if HAS_BEEPER
   #include "../libs/buzzer.h"
 #endif
 
@@ -297,7 +297,7 @@ PGMSTR(str_t_heating_failed, STR_T_HEATING_FAILED);
 #if HAS_HOTEND
   hotend_info_t Temperature::temp_hotend[HOTENDS];
   #define _HMT(N) HEATER_##N##_MAXTEMP,
-  const celsius_t Temperature::hotend_maxtemp[HOTENDS] = ARRAY_BY_HOTENDS(HEATER_0_MAXTEMP, HEATER_1_MAXTEMP, HEATER_2_MAXTEMP, HEATER_3_MAXTEMP, HEATER_4_MAXTEMP, HEATER_5_MAXTEMP, HEATER_6_MAXTEMP, HEATER_7_MAXTEMP);
+  TERN(ProUIex,,const) celsius_t Temperature::hotend_maxtemp[HOTENDS] = ARRAY_BY_HOTENDS(HEATER_0_MAXTEMP, HEATER_1_MAXTEMP, HEATER_2_MAXTEMP, HEATER_3_MAXTEMP, HEATER_4_MAXTEMP, HEATER_5_MAXTEMP, HEATER_6_MAXTEMP, HEATER_7_MAXTEMP);
 #endif
 
 #if HAS_TEMP_REDUNDANT
@@ -485,6 +485,12 @@ PGMSTR(str_t_heating_failed, STR_T_HEATING_FAILED);
     raw_adc_t Temperature::mintemp_raw_BOARD = TEMP_SENSOR_BOARD_RAW_LO_TEMP,
             Temperature::maxtemp_raw_BOARD = TEMP_SENSOR_BOARD_RAW_HI_TEMP;
   #endif
+#endif
+
+#if BOTH(HAS_MARLINUI_MENU, PREVENT_COLD_EXTRUSION) && E_MANUAL > 0
+  bool Temperature::allow_cold_extrude_override = false;
+#else
+  constexpr bool Temperature::allow_cold_extrude_override;
 #endif
 
 #if ENABLED(PREVENT_COLD_EXTRUSION)
@@ -741,7 +747,7 @@ volatile bool Temperature::raw_temps_ready = false;
       // Report heater states every 2 seconds
       if (ELAPSED(ms, next_temp_ms)) {
         #if HAS_TEMP_SENSOR
-          print_heater_states(ischamber ? active_extruder : (isbed ? active_extruder : heater_id));
+          print_heater_states(heater_id < 0 ? active_extruder : (int8_t)heater_id);
           SERIAL_EOL();
         #endif
         next_temp_ms = ms + 2000UL;
@@ -1218,18 +1224,14 @@ int16_t Temperature::getHeaterPower(const heater_id_t heater_id) {
 inline void loud_kill(FSTR_P const lcd_msg, const heater_id_t heater_id) {
   marlin_state = MF_KILLED;
   thermalManager.disable_all_heaters();
-  #if USE_BEEPER
+  #if HAS_BEEPER
     for (uint8_t i = 20; i--;) {
-      WRITE(BEEPER_PIN, HIGH);
-      delay(25);
       watchdog_refresh();
-      WRITE(BEEPER_PIN, LOW);
-      delay(40);
-      watchdog_refresh();
-      delay(40);
+      buzzer.click(25);
+      delay(80);
       watchdog_refresh();
     }
-    WRITE(BEEPER_PIN, HIGH);
+    buzzer.on();
   #endif
   #if ENABLED(NOZZLE_PARK_FEATURE)
     if (!homing_needed_error()) {
@@ -2809,6 +2811,9 @@ void Temperature::init() {
 
 #if HAS_THERMAL_PROTECTION
 
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+
   Temperature::tr_state_machine_t Temperature::tr_state_machine[NR_HEATER_RUNAWAY]; // = { { TRInactive, 0 } };
 
   /**
@@ -2937,6 +2942,8 @@ void Temperature::init() {
       #endif
     }
   }
+
+  #pragma GCC diagnostic pop
 
 #endif // HAS_THERMAL_PROTECTION
 
@@ -3652,6 +3659,9 @@ void Temperature::isr() {
 
   switch (adc_sensor_state) {
 
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+
     case SensorsReady: {
       // All sensors have been read. Stay in this state for a few
       // ISRs to save on calls to temp update/checking code below.
@@ -3668,6 +3678,8 @@ void Temperature::isr() {
         next_sensor_state = (ADCSensorState)(int(StartSampling) + 1);
       }
     }
+
+    #pragma GCC diagnostic pop
 
     case StartSampling:                                   // Start of sampling loops. Do updates/checks.
       if (++temp_count >= OVERSAMPLENR) {                 // 10 * 16 * 1/(16000000/64/256)  = 164ms.
@@ -3900,7 +3912,7 @@ void Temperature::isr() {
     delay(2);
   }
 
-  void Temperature::print_heater_states(const uint8_t target_extruder
+  void Temperature::print_heater_states(const int8_t target_extruder
     OPTARG(HAS_TEMP_REDUNDANT, const bool include_r/*=false*/)
   ) {
     #if HAS_TEMP_HOTEND

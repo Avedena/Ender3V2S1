@@ -113,7 +113,6 @@ namespace Language_en {
   LSTR MSG_HOME_OFFSET_V                  = _UxGT("Home Offset ") STR_V;
   LSTR MSG_HOME_OFFSET_W                  = _UxGT("Home Offset ") STR_W;
   LSTR MSG_HOME_OFFSETS_APPLIED           = _UxGT("Offsets Applied");
-  LSTR MSG_SET_ORIGIN                     = _UxGT("Set Origin");
   LSTR MSG_TRAMMING_WIZARD                = _UxGT("Tramming Wizard");
   LSTR MSG_SELECT_ORIGIN                  = _UxGT("Select Origin");
   LSTR MSG_LAST_VALUE_SP                  = _UxGT("Last value ");
@@ -126,12 +125,12 @@ namespace Language_en {
     LSTR MSG_PREHEAT_1_BEDONLY            = _UxGT("Preheat ") PREHEAT_1_LABEL _UxGT(" Bed");
     LSTR MSG_PREHEAT_1_SETTINGS           = _UxGT("Preheat ") PREHEAT_1_LABEL _UxGT(" Conf");
     #ifdef PREHEAT_2_LABEL
-    LSTR MSG_PREHEAT_2                    = _UxGT("Preheat ") PREHEAT_2_LABEL;
-    LSTR MSG_PREHEAT_2_SETTINGS           = _UxGT("Preheat ") PREHEAT_2_LABEL _UxGT(" Conf");
+      LSTR MSG_PREHEAT_2                  = _UxGT("Preheat ") PREHEAT_2_LABEL;
+      LSTR MSG_PREHEAT_2_SETTINGS         = _UxGT("Preheat ") PREHEAT_2_LABEL _UxGT(" Conf");
     #endif
     #ifdef PREHEAT_3_LABEL
       LSTR MSG_PREHEAT_3                  = _UxGT("Preheat ") PREHEAT_3_LABEL;
-    LSTR MSG_PREHEAT_3_SETTINGS           = _UxGT("Preheat ") PREHEAT_3_LABEL _UxGT(" Conf");
+      LSTR MSG_PREHEAT_3_SETTINGS         = _UxGT("Preheat ") PREHEAT_3_LABEL _UxGT(" Conf");
     #endif
     LSTR MSG_PREHEAT_M                    = _UxGT("Preheat $");
     LSTR MSG_PREHEAT_M_H                  = _UxGT("Preheat $ ~");
@@ -262,6 +261,7 @@ namespace Language_en {
   LSTR MSG_UBL_SMART_FILLIN               = _UxGT("Smart Fill-in");
   LSTR MSG_UBL_FILLIN_MESH                = _UxGT("Fill-in Mesh");
   LSTR MSG_UBL_MESH_FILLED                = _UxGT("Missing Points Filled");
+  LSTR MSG_UBL_MESH_INVALID               = _UxGT("Invalid Mesh");
   LSTR MSG_UBL_INVALIDATE_ALL             = _UxGT("Invalidate All");
   LSTR MSG_UBL_INVALIDATE_CLOSEST         = _UxGT("Invalidate Closest");
   LSTR MSG_UBL_FINE_TUNE_ALL              = _UxGT("Fine Tune All");
@@ -344,8 +344,8 @@ namespace Language_en {
   LSTR MSG_NOZZLE                         = _UxGT("Nozzle");
   LSTR MSG_NOZZLE_N                       = _UxGT("Nozzle ~");
   LSTR MSG_NOZZLE_PARKED                  = _UxGT("Nozzle Parked");
-  LSTR MSG_NOOZLE_CLEAN                   = _UxGT("Clean and press continue");
   LSTR MSG_NOZZLE_STANDBY                 = _UxGT("Nozzle Standby");
+  LSTR MSG_NOOZLE_CLEAN                   = _UxGT("Clean and press continue");
   LSTR MSG_BED                            = _UxGT("Bed");
   LSTR MSG_CHAMBER                        = _UxGT("Enclosure");
   LSTR MSG_COOLER                         = _UxGT("Laser Coolant");
@@ -389,7 +389,7 @@ namespace Language_en {
   LSTR MSG_MPC_BLOCK_HEAT_CAPACITY_E      = _UxGT("Block C *");
   LSTR MSG_SENSOR_RESPONSIVENESS_E        = _UxGT("Sensor res *");
   LSTR MSG_MPC_AMBIENT_XFER_COEFF_E       = _UxGT("Ambient h *");
-  LSTR MSG_MPC_AMBIENT_XFER_COEFF_FAN255_E= _UxGT("Amb. h fan *");
+  LSTR MSG_MPC_AMBIENT_XFER_COEFF_FAN_E   = _UxGT("Amb. h fan *");
   LSTR MSG_SELECT                         = _UxGT("Select");
   LSTR MSG_SELECT_E                       = _UxGT("Select *");
   LSTR MSG_ACC                            = _UxGT("Accel");
@@ -680,6 +680,7 @@ namespace Language_en {
   LSTR MSG_INFO_RUNAWAY_ON                = _UxGT("Runaway Watch: ON");
   LSTR MSG_HOTEND_IDLE_TIMEOUT            = _UxGT("Hotend Idle Timeout");
   LSTR MSG_FAN_SPEED_FAULT                = _UxGT("Fan speed fault");
+
   LSTR MSG_CASE_LIGHT                     = _UxGT("Case Light");
   LSTR MSG_CASE_LIGHT_BRIGHTNESS          = _UxGT("Light Brightness");
   LSTR MSG_KILL_EXPECTED_PRINTER          = _UxGT("INCORRECT PRINTER");
@@ -696,7 +697,7 @@ namespace Language_en {
   LSTR MSG_LOCKSCREEN                     = _UxGT("Lock Screen");
   LSTR MSG_LOCKSCREEN_LOCKED              = _UxGT("Printer is Locked,");
   LSTR MSG_LOCKSCREEN_UNLOCK              = _UxGT("Scroll to unlock.");
-  LSTR MSG_PLEASE_WAIT_REBOOT           = _UxGT("Please wait until reboot.");
+  LSTR MSG_PLEASE_WAIT_REBOOT             = _UxGT("Please wait until reboot.");
 
   #if LCD_WIDTH >= 20 || HAS_DWIN_E3V2
     LSTR MSG_MEDIA_NOT_INSERTED           = _UxGT("No media inserted.");

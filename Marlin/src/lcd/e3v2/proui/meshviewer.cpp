@@ -34,7 +34,7 @@
 #include "../../../feature/bedlevel/bedlevel.h"
 
 #if ENABLED(AUTO_BED_LEVELING_UBL)
-  #include "ubl_tools.h"
+  #include "bedlevel_tools.h"
 #endif
 
 MeshViewerClass MeshViewer;
@@ -106,18 +106,21 @@ void MeshViewerClass::Draw(bool withsave /*= false*/) {
   Title.ShowCaption(GET_TEXT_F(MSG_MESH_VIEWER));
   #if ENABLED(USE_UBL_VIEWER)
     DWINUI::ClearMainArea();
-    ubl_tools.viewer_print_value = true;
-    ubl_tools.Draw_Bed_Mesh(-1, 1, 8, 10 + TITLE_HEIGHT);
+    BedLevelTools.viewer_print_value = true;
+    BedLevelTools.Draw_Bed_Mesh(-1, 1, 8, 10 + TITLE_HEIGHT);
   #else
-    DrawMesh(Z_VALUES_ARR, GRID_MAX_POINTS_X, GRID_MAX_POINTS_Y);
+    DrawMesh(bedlevel.z_values, GRID_MAX_POINTS_X, GRID_MAX_POINTS_Y);
   #endif
   if (withsave) {
     DWINUI::Draw_Button(BTN_Save, 26, 305);
     DWINUI::Draw_Button(BTN_Continue, 146, 305);
     Draw_Select_Highlight(HMI_flag.select_flag, 305);
-  } else DWINUI::Draw_Button(BTN_Continue, 86, 305);
+  }
+  else
+    DWINUI::Draw_Button(BTN_Continue, 86, 305);
+
   #if ENABLED(USE_UBL_VIEWER)
-    ubl_tools.Set_Mesh_Viewer_Status();
+    BedLevelTools.Set_Mesh_Viewer_Status();
   #else
     char str_1[6], str_2[6] = "";
     ui.status_printf(0, F("Mesh minZ: %s, maxZ: %s"),

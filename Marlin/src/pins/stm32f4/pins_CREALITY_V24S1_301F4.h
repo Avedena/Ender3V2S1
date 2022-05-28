@@ -26,12 +26,13 @@
  */
 
 #ifndef BOARD_INFO_NAME
-  #define BOARD_INFO_NAME      "Creality V24S1-301F4"
+  #define BOARD_INFO_NAME "Creality V24S1-301F4"
 #endif
 #ifndef DEFAULT_MACHINE_NAME
-  #define DEFAULT_MACHINE_NAME "Ender 3 S1 F4"
+  #define DEFAULT_MACHINE_NAME "Ender-3 S1 F4"
 #endif
 
 #define DISABLE_DEBUG false // DISABLE_(DEBUG|JTAG) is not supported for STM32F4.
 #define ALLOW_STM32F4
+
 #include "../stm32f1/pins_CREALITY_V24S1_301.h"

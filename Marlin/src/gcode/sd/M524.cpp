@@ -46,6 +46,7 @@ void GcodeSuite::M524() {
       card.abortFilePrintSoon();
     else if (card.isMounted())
       card.closefile();
+
   #endif
 
 }

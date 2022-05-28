@@ -28,10 +28,13 @@
 #include "../../module/motion.h"
 #include "../../module/probe.h"
 #include "../../feature/bedlevel/bedlevel.h"
-#include "../../lcd/marlinui.h"
 
 #if HAS_PTC
   #include "../../feature/probe_temp_comp.h"
+#endif
+
+#if ENABLED(DWIN_LCD_PROUI)
+  #include "../../lcd/marlinui.h"
 #endif
 
 /**
@@ -51,18 +54,18 @@ void GcodeSuite::G30() {
 
   if (!probe.can_reach(pos)) {
     #if ENABLED(DWIN_LCD_PROUI)
-      PGM_P msg = {"Outside of Probing Area"};
-      SERIAL_ECHOLNPGM_P(msg);
-      ui.set_status(msg);
+      SERIAL_ECHOLNF(GET_EN_TEXT_F(MSG_ZPROBE_OUT));
+      LCD_MESSAGE(MSG_ZPROBE_OUT);
     #endif
     return;
   }
+
   // Disable leveling so the planner won't mess with us
   TERN_(HAS_LEVELING, set_bed_leveling_enabled(false));
 
   remember_feedrate_scaling_off();
 
-  TERN_(DWIN_LCD_PROUI, gcode.process_subcommands_now(F("G28O"));)
+  TERN_(DWIN_LCD_PROUI, process_subcommands_now(F("G28O")));
 
   const ProbePtRaise raise_after = parser.boolval('E', true) ? PROBE_PT_STOW : PROBE_PT_NONE;
 
@@ -72,13 +75,13 @@ void GcodeSuite::G30() {
   if (!isnan(measured_z)) {
     SERIAL_ECHOLNPGM("Bed X: ", pos.x, " Y: ", pos.y, " Z: ", measured_z);
     #if ENABLED(DWIN_LCD_PROUI)
-      char cmd[31] = "";
-      char str_1[6], str_2[6],str_3[6] = "";
-      sprintf_P(cmd, PSTR("X:%s, Y:%s, Z:%s"), 
+      char msg[31], str_1[6], str_2[6], str_3[6];
+      sprintf_P(msg, PSTR("X:%s, Y:%s, Z:%s"),
         dtostrf(pos.x, 1, 1, str_1),
         dtostrf(pos.y, 1, 1, str_2),
-        dtostrf(measured_z, 1, 2, str_3));
-      ui.set_status(cmd);
+        dtostrf(measured_z, 1, 3, str_3)
+      );
+      ui.set_status(msg);
     #endif
   }
 

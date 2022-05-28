@@ -35,8 +35,8 @@ MenuItemClass** MenuItems = nullptr;
 MenuClass *CurrentMenu = nullptr;
 MenuClass *PreviousMenu = nullptr;
 void (*onMenuDraw)(MenuClass* menu) = nullptr;
-void (*onCursorErase)(const int8_t line)=nullptr;
-void (*onCursorDraw)(const int8_t line)=nullptr;
+void (*onCursorErase)(const int8_t line) = nullptr;
+void (*onCursorDraw)(const int8_t line) = nullptr;
 MenuData_t MenuData;
 
 // Menuitem Drawing functions =================================================
@@ -142,6 +142,17 @@ void onDrawChkbMenu(MenuItemClass* menuitem, int8_t line, bool checked) {
 void onDrawChkbMenu(MenuItemClass* menuitem, int8_t line) {
   const bool val = *(bool*)static_cast<MenuItemPtrClass*>(menuitem)->value;
   onDrawChkbMenu(menuitem, line, val);
+}
+
+void DrawItemEdit() {
+  switch (checkkey) {
+    case SetIntNoDraw:  if(MenuData.LiveUpdate) MenuData.LiveUpdate(); break;
+    case SetInt:
+    case SetPInt:       DWINUI::Draw_Signed_Int(HMI_data.Text_Color, HMI_data.Selected_Color, 4 , VALX, MBASE(CurrentMenu->line()) - 1, MenuData.Value); break;
+    case SetFloat:
+    case SetPFloat:     DWINUI::Draw_Signed_Float(HMI_data.Text_Color, HMI_data.Selected_Color, 3, MenuData.dp, VALX - MenuData.dp * DWINUI::fontWidth(DWIN_FONT_MENU), MBASE(CurrentMenu->line()), MenuData.Value / POW(10, MenuData.dp)); break;
+    default: break;
+  }
 }
 
 //-----------------------------------------------------------------------------
@@ -264,9 +275,8 @@ int8_t HMI_GetIntNoDraw(const int32_t lo, const int32_t hi) {
       return 2;
     }
     LIMIT(MenuData.Value, lo, hi);
-    return (cval != MenuData.Value) ? 1 : 0;
   }
-  return 0;
+  return int8_t(cval != MenuData.Value);
 }
 
 // Get an integer value using the encoder
@@ -286,7 +296,7 @@ int8_t HMI_GetInt(const int32_t lo, const int32_t hi) {
       return 2;
     }
     LIMIT(MenuData.Value, lo, hi);
-    DWINUI::Draw_Signed_Int(HMI_data.Text_Color, HMI_data.Selected_Color, 4 , VALX, MBASE(CurrentMenu->line()) - 1, MenuData.Value);
+    DrawItemEdit();
     return 1;
   }
   return 0;
@@ -340,7 +350,7 @@ int8_t HMI_GetFloat(uint8_t dp, int32_t lo, int32_t hi) {
       return 2;
     }
     LIMIT(MenuData.Value, lo, hi);
-    DWINUI::Draw_Signed_Float(HMI_data.Text_Color, HMI_data.Selected_Color, 3, dp, VALX - dp * DWINUI::fontWidth(DWIN_FONT_MENU), MBASE(CurrentMenu->line()), MenuData.Value / POW(10, dp));
+    DrawItemEdit();
     return 1;
   }
   return 0;
@@ -526,6 +536,9 @@ void UpdateMenu(MenuClass* &menu) {
   menu->draw();
 }
 
-void ReDrawMenu() { if (CurrentMenu && checkkey==Menu) CurrentMenu->draw(); }
+void ReDrawMenu(bool force /*= false*/) {
+  if (CurrentMenu && (force || checkkey==Menu)) CurrentMenu->draw();
+  if (force) DrawItemEdit();
+}
 
 #endif // DWIN_LCD_PROUI

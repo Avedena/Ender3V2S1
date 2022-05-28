@@ -27,7 +27,7 @@
 
 #include "../../../inc/MarlinConfig.h"
 
-#if ANY(AUTO_BED_LEVELING_BILINEAR, AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_3POINT, AUTO_BED_LEVELING_UBL) && DISABLED(PROBE_MANUALLY)
+#if DISABLED(PROBE_MANUALLY) && ANY(AUTO_BED_LEVELING_BILINEAR, AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_3POINT, AUTO_BED_LEVELING_UBL)
   #define HAS_ONESTEP_LEVELING 1
 #endif
 
@@ -37,6 +37,10 @@
 
 #if ANY(BABYSTEPPING, HAS_BED_PROBE, HAS_WORKSPACE_OFFSET)
   #define HAS_ZOFFSET_ITEM 1
+#endif
+
+#if HAS_CGCODE
+  #include "custom_gcodes.h"
 #endif
 
 enum processID : uint8_t {
@@ -165,9 +169,9 @@ void Goto_PowerLossRecovery();
 void Goto_ConfirmToPrint();
 void DWIN_Draw_Dashboard(const bool with_update); // Status Area
 void Draw_Main_Area();      // Redraw main area;
-void DWIN_DrawStatusLine(const char *text); // Draw simple status text
-void DWIN_Redraw_Dash();    // Redraw Dash and Status line
-void DWIN_Redraw_screen();  // Redraw all screen elements
+void DWIN_DrawStatusLine(const char *text = ""); // Draw simple status text
+void DWIN_RedrawDash();    // Redraw Dash and Status line
+void DWIN_RedrawScreen();  // Redraw all screen elements
 void HMI_MainMenu();        // Main process screen
 void HMI_SelectFile();      // File page
 void HMI_Printing();        // Print page
@@ -197,16 +201,16 @@ void DWIN_Print_Aborted();
 #if HAS_FILAMENT_SENSOR
   void DWIN_FilamentRunout(const uint8_t extruder);
 #endif
-void DWIN_Progress_Update();
+void DWIN_M73();
 void DWIN_Print_Header(const char *text);
 void DWIN_SetColorDefaults();
 void DWIN_ApplyColor();
 void DWIN_ApplyColor(const int8_t element, const bool ldef=false);
-void DWIN_StoreSettings(char *buff);
-void DWIN_LoadSettings(const char *buff);
+void DWIN_CopySettingsTo(char * const buff);
+void DWIN_CopySettingsFrom(const char * const buff);
 void DWIN_SetDataDefaults();
 void DWIN_RebootScreen();
-void DWIN_Gcode(const int16_t codenum);
+inline void DWIN_Gcode(const int16_t codenum) { TERN_(HAS_CGCODE, custom_gcode(codenum)); };
 
 #if ENABLED(ADVANCED_PAUSE_FEATURE)
   void DWIN_Popup_Pause(FSTR_P const fmsg, uint8_t button=0);
@@ -244,9 +248,7 @@ void Draw_Tramming_Menu();
 #if HAS_BED_PROBE
   void Draw_ProbeSet_Menu();
 #endif
-#if HAS_FILAMENT_SENSOR
-  void Draw_FilSet_Menu();
-#endif
+void Draw_FilSet_Menu();
 #if ENABLED(NOZZLE_PARK_FEATURE)
   void Draw_ParkPos_Menu();
 #endif

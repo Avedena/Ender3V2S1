@@ -39,13 +39,15 @@ uint16_t DWINUI::buttoncolor = Def_Button_Color;
 uint8_t  DWINUI::font = font8x16;
 FSTR_P const DWINUI::Author = F(STRING_CONFIG_H_AUTHOR);
 
-void (*DWINUI::onTitleDraw)(TitleClass* title)=nullptr;
+void (*DWINUI::onTitleDraw)(TitleClass* title) = nullptr;
 
 void DWINUI::init() {
   delay(750);   // Delay for wait to wakeup screen
-  const bool hs = DWIN_Handshake();
-  TERN_(DEBUG_DWIN, SERIAL_ECHOPGM("DWIN_Handshake ");)
-  TERN(DEBUG_DWIN, SERIAL_ECHOLNF(hs ? F("ok.") : F("error.")), UNUSED(hs));
+  const bool hs = DWIN_Handshake(); UNUSED(hs);
+  #if ENABLED(DEBUG_DWIN)
+    SERIAL_ECHOPGM("DWIN_Handshake ");
+    SERIAL_ECHOLNF(hs ? F("ok.") : F("error."));
+  #endif
   DWIN_Frame_SetDir(1);
   cursor.reset();
   pencolor = Color_White;

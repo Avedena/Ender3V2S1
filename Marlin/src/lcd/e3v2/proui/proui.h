@@ -23,9 +23,6 @@
 
 #include "../../../inc/MarlinConfigPre.h"
 
-#define HAS_GCODE_PREVIEW 1
-#define HAS_TOOLBAR 1
-
 #ifndef LOW
   #define LOW  0x0
 #endif
@@ -42,9 +39,12 @@ constexpr int16_t DEF_Y_MIN_POS = Y_MIN_POS;
 constexpr int16_t DEF_X_MAX_POS = X_MAX_POS;
 constexpr int16_t DEF_Y_MAX_POS = Y_MAX_POS;
 constexpr int16_t DEF_Z_MAX_POS = Z_MAX_POS;
+constexpr bool DEF_INVERT_E0_DIR = INVERT_E0_DIR;
+
 #define DEF_NOZZLE_PARK_POINT {240, 220, 20}
 #if HAS_MESH
   constexpr int8_t DEF_GRID_MAX_POINTS = GRID_MAX_POINTS_X;
+  #define GRID_MIN 3
   #define GRID_LIMIT 9
 #endif
 
@@ -66,7 +66,6 @@ constexpr int16_t DEF_MESH_MIN_Y = MESH_MIN_Y;
 constexpr int16_t DEF_MESH_MAX_Y = MESH_MAX_Y;
 #define MIN_MESH_INSET 5
 #define MAX_MESH_INSET X_BED_SIZE
-#define DEF_INVERT_E0_DIR false
 #define DEF_FIL_MOTION_SENSOR false
 
 typedef struct {
@@ -97,6 +96,7 @@ typedef struct {
     #define TBMaxOpt 5
     uint8_t TBopt[TBMaxOpt] = {0, 1, 2, 3, 4};
   #endif
+  celsius_t hotend_maxtemp = HEATER_0_MAXTEMP;
 } PRO_data_t;
 extern PRO_data_t PRO_data;
 
@@ -113,31 +113,40 @@ public:
   static void DrawRunoutActive(bool selected);
   static void ApplyRunoutActive();
   static void C412();
-#endif
-#if ENABLED(AUTO_BED_LEVELING_BILINEAR)
-  static void abl_extrapolate();
+  static void C412_report(const bool forReplay=true);
 #endif
 #if ENABLED(POWER_LOSS_RECOVERY)
   static void PowerLoss();
 #endif
 #if HAS_MESH
   static void DrawMeshPoints(bool selected, int8_t line, uint8_t MeshPoints);
+  static void CheckMeshInsets();
   static void ApplyMeshLimits();
   static void ApplyMeshPoints();
   static void C29();
+  static void C29_report(const bool forReplay=true);
 #endif
   static void C100();
+  static void C100_report(const bool forReplay=true);
   static void C101();
+  static void C101_report(const bool forReplay=true);
   static void C102();
+  static void C102_report(const bool forReplay=true);
+  static void C104();
+  static void C104_report(const bool forReplay=true);
 #if ENABLED(NOZZLE_PARK_FEATURE)
   static void C125();
+  static void C125_report(const bool forReplay=true);
 #endif
   static void C562();
+  static void C562_report(const bool forReplay=true);
 #if HAS_BED_PROBE
   static void C851();
+  static void C851_report(const bool forReplay=true);
 #endif
   static void UpdateAxis(const AxisEnum axis);
   static void ApplyPhySet();
+  static void CheckParkingPos();
   static void SetData();
   static void LoadSettings();
   #if EITHER(AUTO_BED_LEVELING_BILINEAR, MESH_BED_LEVELING)

@@ -32,7 +32,7 @@
     #include "../../../lcd/extui/ui_api.h"
   #endif
 
-  mesh_bed_leveling mbl;
+  mesh_bed_leveling bedlevel;
 
   float mesh_bed_leveling::z_offset,
      #if ProUIex

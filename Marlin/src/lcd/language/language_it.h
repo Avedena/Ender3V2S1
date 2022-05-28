@@ -102,7 +102,6 @@ namespace Language_it {
   LSTR MSG_HOME_OFFSET_V                  = _UxGT("Offset home ") STR_V;
   LSTR MSG_HOME_OFFSET_W                  = _UxGT("Offset home ") STR_W;
   LSTR MSG_HOME_OFFSETS_APPLIED           = _UxGT("Offset applicato");
-  LSTR MSG_SET_ORIGIN                     = _UxGT("Imposta Origine");
   LSTR MSG_TRAMMING_WIZARD                = _UxGT("Wizard Tramming");
   LSTR MSG_SELECT_ORIGIN                  = _UxGT("Selez. origine");
   LSTR MSG_LAST_VALUE_SP                  = _UxGT("Ultimo valore ");
@@ -344,8 +343,8 @@ namespace Language_it {
   LSTR MSG_PID_AUTOTUNE_E                 = _UxGT("Calib.PID *");
   LSTR MSG_PID_CYCLE                      = _UxGT("Ciclo PID");
   LSTR MSG_PID_AUTOTUNE_DONE              = _UxGT("Calibr.PID eseguita");
-  LSTR MSG_PID_BAD_EXTRUDER_NUM           = _UxGT("Calibrazione fallita. Estrusore errato.");
-  LSTR MSG_PID_TEMP_TOO_HIGH              = _UxGT("Calibrazione fallita. Temperatura troppo alta.");
+  LSTR MSG_PID_BAD_EXTRUDER_NUM           = _UxGT("Calibrazione fallita! Estrusore errato.");
+  LSTR MSG_PID_TEMP_TOO_HIGH              = _UxGT("Calibrazione fallita! Temperatura troppo alta.");
   LSTR MSG_PID_TIMEOUT                    = _UxGT("Calibrazione fallita! Tempo scaduto.");
   LSTR MSG_MPC_MEASURING_AMBIENT          = _UxGT("Testing heat loss");
   LSTR MSG_MPC_AUTOTUNE                   = _UxGT("MPC Autotune");
@@ -354,7 +353,7 @@ namespace Language_it {
   LSTR MSG_MPC_BLOCK_HEAT_CAPACITY_E      = _UxGT("C blocco *");
   LSTR MSG_SENSOR_RESPONSIVENESS_E        = _UxGT("Reattiv.Sens. *");
   LSTR MSG_MPC_AMBIENT_XFER_COEFF_E       = _UxGT("H ambiente *");
-  LSTR MSG_MPC_AMBIENT_XFER_COEFF_FAN255_E= _UxGT("H Amb. vent. *");
+  LSTR MSG_MPC_AMBIENT_XFER_COEFF_FAN_E   = _UxGT("H Amb. vent. *");
   LSTR MSG_SELECT                         = _UxGT("Seleziona");
   LSTR MSG_SELECT_E                       = _UxGT("Seleziona *");
   LSTR MSG_ACC                            = _UxGT("Accel");

@@ -39,7 +39,7 @@
   #include "../../../lcd/e3v2/proui/proui.h"
 #endif
 
-LevelingBilinear bbl;
+LevelingBilinear bedlevel;
 
 xy_pos_t LevelingBilinear::grid_spacing,
          LevelingBilinear::grid_start;
@@ -116,50 +116,48 @@ void LevelingBilinear::set_grid(const xy_pos_t& _grid_spacing, const xy_pos_t& _
   grid_factor = grid_spacing.reciprocal();
 }
 
+#if !ProUIex
 /**
  * Fill in the unprobed points (corners of circular print surface)
  * using linear extrapolation, away from the center.
  */
 void LevelingBilinear::extrapolate_unprobed_bed_level() {
-  #if ProUIex
-    ProEx.abl_extrapolate();
+  #ifdef HALF_IN_X
+    constexpr uint8_t ctrx2 = 0, xend = GRID_MAX_POINTS_X - 1;
   #else
-    #ifdef HALF_IN_X
-      constexpr uint8_t ctrx2 = 0, xend = GRID_MAX_POINTS_X - 1;
-    #else
-      constexpr uint8_t ctrx1 = (GRID_MAX_CELLS_X) / 2, // left-of-center
-                        ctrx2 = (GRID_MAX_POINTS_X) / 2,  // right-of-center
-                        xend = ctrx1;
-    #endif
-
-    #ifdef HALF_IN_Y
-      constexpr uint8_t ctry2 = 0, yend = GRID_MAX_POINTS_Y - 1;
-    #else
-      constexpr uint8_t ctry1 = (GRID_MAX_CELLS_Y) / 2, // top-of-center
-                        ctry2 = (GRID_MAX_POINTS_Y) / 2,  // bottom-of-center
-                        yend = ctry1;
-    #endif
-
-    LOOP_LE_N(xo, xend)
-      LOOP_LE_N(yo, yend) {
-        uint8_t x2 = ctrx2 + xo, y2 = ctry2 + yo;
-        #ifndef HALF_IN_X
-          const uint8_t x1 = ctrx1 - xo;
-        #endif
-        #ifndef HALF_IN_Y
-          const uint8_t y1 = ctry1 - yo;
-          #ifndef HALF_IN_X
-            extrapolate_one_point(x1, y1, +1, +1);   //  left-below + +
-          #endif
-          extrapolate_one_point(x2, y1, -1, +1);     // right-below - +
-        #endif
-        #ifndef HALF_IN_X
-          extrapolate_one_point(x1, y2, +1, -1);     //  left-above + -
-        #endif
-        extrapolate_one_point(x2, y2, -1, -1);       // right-above - -
-      }
+    constexpr uint8_t ctrx1 = (GRID_MAX_CELLS_X) / 2, // left-of-center
+                      ctrx2 = (GRID_MAX_POINTS_X) / 2,  // right-of-center
+                      xend = ctrx1;
   #endif
+
+  #ifdef HALF_IN_Y
+    constexpr uint8_t ctry2 = 0, yend = GRID_MAX_POINTS_Y - 1;
+  #else
+    constexpr uint8_t ctry1 = (GRID_MAX_CELLS_Y) / 2, // top-of-center
+                      ctry2 = (GRID_MAX_POINTS_Y) / 2,  // bottom-of-center
+                      yend = ctry1;
+  #endif
+
+  LOOP_LE_N(xo, xend)
+    LOOP_LE_N(yo, yend) {
+      uint8_t x2 = ctrx2 + xo, y2 = ctry2 + yo;
+      #ifndef HALF_IN_X
+        const uint8_t x1 = ctrx1 - xo;
+      #endif
+      #ifndef HALF_IN_Y
+        const uint8_t y1 = ctry1 - yo;
+        #ifndef HALF_IN_X
+          extrapolate_one_point(x1, y1, +1, +1);   //  left-below + +
+        #endif
+        extrapolate_one_point(x2, y1, -1, +1);     // right-below - +
+      #endif
+      #ifndef HALF_IN_X
+        extrapolate_one_point(x1, y2, +1, -1);     //  left-above + -
+      #endif
+      extrapolate_one_point(x2, y2, -1, -1);       // right-above - -
+    }
 }
+#endif
 
 void LevelingBilinear::print_leveling_grid(const bed_mesh_t* _z_values /*= NULL*/) {
   // print internal grid(s) or just the one passed as a parameter
@@ -271,8 +269,8 @@ void LevelingBilinear::print_leveling_grid(const bed_mesh_t* _z_values /*= NULL*
               );
           }
   }
-#endif // ABL_BILINEAR_SUBDIVISION
 
+#endif // ABL_BILINEAR_SUBDIVISION
 
 // Refresh after other values have been updated
 void LevelingBilinear::refresh_bed_level() {

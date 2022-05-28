@@ -127,7 +127,7 @@
       xy_float_t okay_homing_xy = safe_homing_xy;
       okay_homing_xy -= home_offset;
     #else
-      constexpr xy_float_t okay_homing_xy = safe_homing_xy;
+      TERN(ProUIex, , constexpr) xy_float_t okay_homing_xy = safe_homing_xy;
     #endif
 
     destination.set(okay_homing_xy, current_position.z);

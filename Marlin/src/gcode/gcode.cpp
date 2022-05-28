@@ -75,7 +75,6 @@ GcodeSuite gcode;
   #include "../lcd/e3v2/proui/dwin.h"
 #endif
 
-
 // Inactivity shutdown
 millis_t GcodeSuite::previous_move_ms = 0,
          GcodeSuite::max_inactive_time = 0,
@@ -215,7 +214,7 @@ void GcodeSuite::get_destination_from_command() {
   if (parser.floatval('F') > 0)
     feedrate_mm_s = parser.value_feedrate();
 
-  #if ENABLED(PRINTCOUNTER)
+  #if BOTH(PRINTCOUNTER, HAS_EXTRUDERS)
     if (!DEBUGGING(DRYRUN) && !skip_move)
       print_job_timer.incFilamentUsed(destination.e - current_position.e);
   #endif

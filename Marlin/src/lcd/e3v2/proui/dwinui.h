@@ -31,6 +31,7 @@
 #define ICON_BedSizeY             ICON_PrintSize
 #define ICON_BedTramming          ICON_SetHome
 #define ICON_Binary               ICON_Contact
+#define ICON_BltouchReset         ICON_StockConfiguration
 #define ICON_Brightness           ICON_Motion
 #define ICON_Cancel               ICON_StockConfiguration
 #define ICON_CustomPreheat        ICON_SetEndTemp
@@ -148,7 +149,7 @@ constexpr uint8_t  TITLE_HEIGHT = 30,                          // Title bar heig
                    TROWS = (STATUS_Y - TITLE_HEIGHT) / MLINE,  // Total rows
                    MROWS = TROWS - 1,                          // Other-than-Back
                    ICOX = 26,                                  // Menu item icon X position
-                   LBLX = 60,                                  // Menu item label X position
+                   LBLX = 55,                                  // Menu item label X position
                    VALX = 210,                                 // Menu item value X position
                    MENU_CHR_W = 8, MENU_CHR_H = 16,            // Menu font 8x16
                    STAT_CHR_W = 10;
